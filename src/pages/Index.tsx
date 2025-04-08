@@ -1,15 +1,29 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import VibeMeter from '../components/VibeMeter';
 import { moods } from '../lib/mockData';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TextPlugin } from 'gsap/TextPlugin';
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 const Index = () => {
   const navigate = useNavigate();
   const [isHoveringPhone, setIsHoveringPhone] = useState(false);
   
-  // Animation variants for staggered children animations
+  // Refs for GSAP animations
+  const heroRef = useRef(null);
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const ctaRef = useRef(null);
+  const phoneRef = useRef(null);
+  const featuresRef = useRef(null);
+  const featureCardsRef = useRef([]);
+  
+  // Animation variants for staggered children animations (keep for framer-motion)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,6 +46,79 @@ const Index = () => {
       } 
     }
   };
+
+  // GSAP animations
+  useEffect(() => {
+    // Hero section entrance animation
+    const tl = gsap.timeline();
+    
+    tl.from(titleRef.current, {
+      duration: 1.2,
+      y: 50,
+      opacity: 0,
+      ease: "power3.out"
+    })
+    .from(subtitleRef.current, {
+      duration: 0.8,
+      y: 30,
+      opacity: 0,
+      ease: "power3.out"
+    }, "-=0.6")
+    .from(ctaRef.current.children, {
+      duration: 0.6,
+      y: 20,
+      opacity: 0,
+      stagger: 0.2,
+      ease: "back.out(1.7)"
+    }, "-=0.4")
+    .from(phoneRef.current, {
+      duration: 1.5,
+      scale: 0.8,
+      y: 30,
+      opacity: 0,
+      rotate: -5,
+      ease: "elastic.out(1, 0.5)"
+    }, "-=0.8");
+    
+    // Feature cards animation
+    gsap.from(featureCardsRef.current, {
+      scrollTrigger: {
+        trigger: featuresRef.current,
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      duration: 0.8,
+      y: 50,
+      opacity: 0,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+    
+    // Text reveal animation for CTA section
+    ScrollTrigger.create({
+      trigger: ".cta-section",
+      start: "top 70%",
+      onEnter: () => {
+        gsap.to(".cta-text", {
+          backgroundSize: "100%",
+          duration: 1,
+          ease: "power4.out"
+        });
+        gsap.from(".cta-button", {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.8,
+          delay: 0.5,
+          ease: "back.out(1.7)"
+        });
+      }
+    });
+
+    // Cleanup
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
   
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50">
@@ -73,40 +160,19 @@ const Index = () => {
         </div>
       </header>
       
-      {/* Hero Section with Enhanced Animations */}
-      <section className="container mx-auto py-16 px-4 lg:px-0">
+      {/* Hero Section with GSAP Animations */}
+      <section ref={heroRef} className="container mx-auto py-16 px-4 lg:px-0">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h2 
-              variants={itemVariants}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
-            >
-              Chat with <motion.span 
-                className="bg-clip-text text-transparent bg-viber-gradient"
-                animate={{ 
-                  backgroundSize: ["100%", "200%", "100%"],
-                }}
-                transition={{ 
-                  duration: 3,
-                  repeat: Infinity, 
-                  repeatType: "reverse" 
-                }}
-              >Vibes</motion.span>, not just messages
-            </motion.h2>
-            <motion.p 
-              variants={itemVariants}
-              className="text-lg text-gray-600 mb-8"
-            >
+          <div>
+            <h2 ref={titleRef} className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+              Chat with <span className="bg-clip-text text-transparent bg-viber-gradient">
+                Vibes
+              </span>, not just messages
+            </h2>
+            <p ref={subtitleRef} className="text-lg text-gray-600 mb-8">
               Express your mood, share your status, and get AI-powered conversation insights with the next-gen messaging app.
-            </motion.p>
-            <motion.div
-              variants={itemVariants}
-              className="flex space-x-4"
-            >
+            </p>
+            <div ref={ctaRef} className="flex space-x-4">
               <motion.button
                 whileHover={{ 
                   scale: 1.05, 
@@ -128,10 +194,10 @@ const Index = () => {
               >
                 Learn More
               </motion.button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
           
-          <div className="relative">
+          <div ref={phoneRef} className="relative">
             <motion.div 
               className="relative z-10 max-w-xs mx-auto"
               initial={{ opacity: 0, y: 30 }}
@@ -202,7 +268,7 @@ const Index = () => {
               </motion.div>
             </motion.div>
             
-            {/* Enhanced Decorative elements with parallax effect */}
+            {/* Enhanced decorative elements with GSAP-powered parallax effect */}
             <motion.div
               className="absolute top-1/4 -left-10 w-20 h-20 bg-viber-green rounded-full opacity-20 blur-xl"
               animate={{
@@ -245,8 +311,8 @@ const Index = () => {
         </div>
       </section>
       
-      {/* Features Section */}
-      <section className="container mx-auto py-16 px-4 lg:px-0">
+      {/* Features Section with GSAP ScrollTrigger */}
+      <section ref={featuresRef} className="container mx-auto py-16 px-4 lg:px-0">
         <motion.h2 
           className="text-3xl font-bold text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -278,58 +344,47 @@ const Index = () => {
               color: "bg-viber-blue"
             }
           ].map((feature, index) => (
-            <motion.div
+            <div
               key={index}
               className="viber-card"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              ref={el => featureCardsRef.current[index] = el}
             >
               <div className={`w-12 h-12 ${feature.color} rounded-full flex items-center justify-center text-white text-2xl mb-4`}>
                 {feature.icon}
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>
       
-      {/* CTA Section */}
-      <section className="py-16 bg-viber-gradient">
+      {/* CTA Section with GSAP text reveal animation */}
+      <section className="py-16 bg-viber-gradient cta-section">
         <div className="container mx-auto px-4 lg:px-0">
           <div className="max-w-3xl mx-auto text-center text-white">
-            <motion.h2 
-              className="text-3xl font-bold mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+            <h2 
+              className="text-3xl font-bold mb-6 cta-text"
+              style={{ 
+                backgroundImage: 'linear-gradient(to right, white 0%, white 100%)',
+                backgroundSize: '0%',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'left',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
             >
               Ready to experience a new way to chat?
-            </motion.h2>
-            <motion.p 
-              className="mb-8 text-white/80"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
+            </h2>
+            <p className="mb-8 text-white/80">
               Join the VIBER community and start expressing yourself in ways traditional messaging apps don't allow.
-            </motion.p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            </p>
+            <button
               onClick={() => navigate('/dashboard')}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="px-8 py-4 rounded-full font-medium bg-white text-viber-purple shadow-lg hover:shadow-xl transition-all"
+              className="px-8 py-4 rounded-full font-medium bg-white text-viber-purple shadow-lg hover:shadow-xl hover:scale-105 transition-all cta-button"
             >
               Open VIBER Now
-            </motion.button>
+            </button>
           </div>
         </div>
       </section>
@@ -349,4 +404,3 @@ const Index = () => {
 };
 
 export default Index;
-
