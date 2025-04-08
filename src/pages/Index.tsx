@@ -6,6 +6,14 @@ import { moods } from '../lib/mockData';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../components/ui/carousel";
+import { Card, CardContent } from "../components/ui/card";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
@@ -22,7 +30,7 @@ const Index = () => {
   const phoneRef = useRef(null);
   const featuresRef = useRef(null);
   const featureCardsRef = useRef([]);
-  
+
   // Animation variants for staggered children animations (keep for framer-motion)
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -323,40 +331,160 @@ const Index = () => {
           Express yourself like never before
         </motion.h2>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
           {[
             {
               title: "Vibe Check",
               description: "Share your mood with animated emoji indicators that let friends know your state of mind.",
               icon: "🍃",
-              color: "bg-emerald-400"
+              color: "bg-emerald-400",
+              details: "The Vibe Check feature uses AI to analyze your messages and suggest mood indicators. Your friends can see your vibe in real-time, making conversations more authentic and empathetic."
             },
             {
               title: "Status Builder",
               description: "Create custom statuses with our drag-and-drop editor and emoji keyboard.",
               icon: "✨",
-              color: "bg-viber-purple"
+              color: "bg-viber-purple",
+              details: "Combine text, emojis, and even animated GIFs to create unique status messages that truly express how you're feeling. Schedule status changes to automatically update based on your calendar."
             },
             {
               title: "AI Summaries",
               description: "Get intelligent insights about your conversations with our built-in AI assistant.",
               icon: "🤖",
-              color: "bg-viber-blue"
+              color: "bg-viber-blue",
+              details: "Our AI assistant analyzes conversation patterns to highlight important topics, suggest follow-ups, and even recommend when to check in with friends who might need support."
             }
           ].map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="viber-card"
+              className="viber-card relative overflow-hidden"
               ref={el => featureCardsRef.current[index] = el}
+              whileHover={{ 
+                y: -10, 
+                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+              }}
+              transition={{ duration: 0.3 }}
             >
               <div className={`w-12 h-12 ${feature.color} rounded-full flex items-center justify-center text-white text-2xl mb-4`}>
                 {feature.icon}
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
-            </div>
+              <p className="text-gray-600 mb-4">{feature.description}</p>
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                transition={{ duration: 0.5 }}
+                className="text-sm text-gray-500 border-t border-gray-100 pt-4 mt-2"
+              >
+                {feature.details}
+              </motion.div>
+            </motion.div>
           ))}
         </div>
+
+        {/* Testimonial Carousel */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-bold text-center mb-8">What our users are saying</h3>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-5xl mx-auto"
+          >
+            <CarouselContent>
+              {[
+                {
+                  quote: "VIBER has transformed how I communicate with my friends. The mood indicators make it so much easier to understand the tone of messages!",
+                  name: "Sarah K.",
+                  title: "Marketing Director",
+                  avatar: "https://i.pravatar.cc/100?img=1"
+                },
+                {
+                  quote: "The Status Builder is incredibly creative. I love how I can express exactly what I'm feeling or doing in such a visual way.",
+                  name: "Marcus T.",
+                  title: "Graphic Designer",
+                  avatar: "https://i.pravatar.cc/100?img=2"
+                },
+                {
+                  quote: "The AI conversation summaries have been a game-changer for keeping track of important details in my work chats.",
+                  name: "Priya M.",
+                  title: "Project Manager",
+                  avatar: "https://i.pravatar.cc/100?img=3"
+                }
+              ].map((testimonial, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1">
+                    <Card>
+                      <CardContent className="flex flex-col gap-4 p-6">
+                        <div className="flex gap-4 items-center">
+                          <img
+                            src={testimonial.avatar}
+                            alt={testimonial.name}
+                            className="rounded-full h-12 w-12 object-cover"
+                          />
+                          <div>
+                            <h4 className="font-semibold">{testimonial.name}</h4>
+                            <p className="text-sm text-gray-500">{testimonial.title}</p>
+                          </div>
+                        </div>
+                        <blockquote className="text-sm text-gray-600 italic">"{testimonial.quote}"</blockquote>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="hidden md:flex justify-center mt-4">
+              <CarouselPrevious className="static translate-y-0 -translate-x-4" />
+              <CarouselNext className="static translate-y-0 translate-x-4" />
+            </div>
+          </Carousel>
+        </div>
+
+        {/* Use Cases with Images */}
+        <div className="mt-16">
+          <h3 className="text-2xl font-bold text-center mb-8">See it in action</h3>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
+                alt="Person using VIBER" 
+                className="rounded-lg shadow-lg w-full object-cover"
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-4"
+            >
+              <h4 className="text-xl font-bold">Stay connected on the go</h4>
+              <p>VIBER adapts to your lifestyle, whether you're working from a coffee shop, commuting, or relaxing at home. Share your context with friends and colleagues to set the right expectations for your responses.</p>
+              <ul className="space-y-2">
+                <li className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-viber-green flex items-center justify-center text-white mr-2">✓</div>
+                  <span>Quick mood updates</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-viber-green flex items-center justify-center text-white mr-2">✓</div>
+                  <span>Location-aware status suggestions</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="w-6 h-6 rounded-full bg-viber-green flex items-center justify-center text-white mr-2">✓</div>
+                  <span>Customize notification settings based on your vibe</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+
       </section>
       
       {/* CTA Section with GSAP text reveal animation */}
