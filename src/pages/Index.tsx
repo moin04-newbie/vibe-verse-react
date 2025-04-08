@@ -30,6 +30,7 @@ const Index = () => {
   const phoneRef = useRef(null);
   const featuresRef = useRef(null);
   const featureCardsRef = useRef([]);
+  const testimonialsRef = useRef(null);
 
   // Animation variants for staggered children animations (keep for framer-motion)
   const containerVariants = {
@@ -102,6 +103,19 @@ const Index = () => {
       ease: "power3.out"
     });
     
+    // Testimonials animation
+    gsap.from(testimonialsRef.current, {
+      scrollTrigger: {
+        trigger: testimonialsRef.current,
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      duration: 0.8,
+      y: 30,
+      opacity: 0,
+      ease: "power3.out"
+    });
+
     // Text reveal animation for CTA section
     ScrollTrigger.create({
       trigger: ".cta-section",
@@ -383,7 +397,7 @@ const Index = () => {
         </div>
 
         {/* Testimonial Carousel */}
-        <div className="mb-16">
+        <div className="mb-16" ref={testimonialsRef}>
           <h3 className="text-2xl font-bold text-center mb-8">What our users are saying</h3>
           <Carousel
             opts={{
@@ -411,6 +425,18 @@ const Index = () => {
                   name: "Priya M.",
                   title: "Project Manager",
                   avatar: "https://i.pravatar.cc/100?img=3"
+                },
+                {
+                  quote: "I've never felt so understood in a chat app before. The vibe check feature helps my friends know when I need support without having to explicitly ask.",
+                  name: "Jordan L.",
+                  title: "Student",
+                  avatar: "https://i.pravatar.cc/100?img=4"
+                },
+                {
+                  quote: "As someone who works remotely, VIBER helps me stay connected with my team in a more meaningful way than regular messaging apps.",
+                  name: "Alex R.",
+                  title: "Software Developer",
+                  avatar: "https://i.pravatar.cc/100?img=5"
                 }
               ].map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
