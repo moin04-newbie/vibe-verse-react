@@ -9,6 +9,30 @@ const Index = () => {
   const navigate = useNavigate();
   const [isHoveringPhone, setIsHoveringPhone] = useState(false);
   
+  // Animation variants for staggered children animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 100 
+      } 
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50">
       {/* Header */}
@@ -23,9 +47,20 @@ const Index = () => {
             >
               💬
             </motion.div>
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-viber-gradient">VIBER</h1>
+            <motion.h1 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-2xl font-bold bg-clip-text text-transparent bg-viber-gradient"
+            >
+              VIBER
+            </motion.h1>
           </div>
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -34,60 +69,97 @@ const Index = () => {
             >
               Open App
             </motion.button>
-          </div>
+          </motion.div>
         </div>
       </header>
       
-      {/* Hero Section */}
+      {/* Hero Section with Enhanced Animations */}
       <section className="container mx-auto py-16 px-4 lg:px-0">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <motion.h2 
+              variants={itemVariants}
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
             >
-              Chat with <span className="bg-clip-text text-transparent bg-viber-gradient">Vibes</span>, not just messages
+              Chat with <motion.span 
+                className="bg-clip-text text-transparent bg-viber-gradient"
+                animate={{ 
+                  backgroundSize: ["100%", "200%", "100%"],
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity, 
+                  repeatType: "reverse" 
+                }}
+              >Vibes</motion.span>, not just messages
             </motion.h2>
             <motion.p 
+              variants={itemVariants}
               className="text-lg text-gray-600 mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
             >
               Express your mood, share your status, and get AI-powered conversation insights with the next-gen messaging app.
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              variants={itemVariants}
               className="flex space-x-4"
             >
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0px 0px 15px rgba(139, 92, 246, 0.5)" 
+                }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/dashboard')}
                 className="viber-button"
               >
                 Get Started
               </motion.button>
-              <button className="px-6 py-3 rounded-full font-medium border-2 border-viber-purple text-viber-purple hover:bg-viber-purple/5 transition-colors">
+              <motion.button 
+                whileHover={{ 
+                  scale: 1.05,
+                  backgroundColor: "rgba(139, 92, 246, 0.1)" 
+                }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 rounded-full font-medium border-2 border-viber-purple text-viber-purple hover:bg-viber-purple/5 transition-colors"
+              >
                 Learn More
-              </button>
+              </motion.button>
             </motion.div>
-          </div>
+          </motion.div>
           
           <div className="relative">
             <motion.div 
               className="relative z-10 max-w-xs mx-auto"
-              initial={{ y: 20 }}
-              animate={{ y: isHoveringPhone ? -10 : 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ 
+                opacity: 1, 
+                y: isHoveringPhone ? -10 : 0,
+              }}
+              transition={{ 
+                duration: 0.8,
+                type: "spring", 
+                stiffness: 300, 
+                damping: 15 
+              }}
               onHoverStart={() => setIsHoveringPhone(true)}
               onHoverEnd={() => setIsHoveringPhone(false)}
             >
-              <div className="rounded-3xl overflow-hidden border-8 border-black relative bg-black">
+              <motion.div 
+                className="rounded-3xl overflow-hidden border-8 border-black relative bg-black"
+                initial={{ rotate: -5 }}
+                animate={{ 
+                  rotate: isHoveringPhone ? 0 : [-2, 2, -2],
+                  y: isHoveringPhone ? 0 : [0, -5, 0]
+                }}
+                transition={{ 
+                  rotate: { duration: 6, repeat: Infinity, repeatType: "reverse" },
+                  y: { duration: 3, repeat: Infinity, repeatType: "reverse" } 
+                }}
+              >
                 <div className="absolute top-0 w-1/3 h-6 bg-black left-1/3 rounded-b-xl z-10"></div>
                 <div className="h-[600px] bg-viber-gradient overflow-hidden">
                   <img 
@@ -110,29 +182,64 @@ const Index = () => {
                     >
                       <VibeMeter initialMood={moods[0]} />
                     </motion.div>
-                    <h3 className="text-2xl font-bold mb-3">VIBER</h3>
-                    <p className="text-white/70 text-sm">Next-gen messaging</p>
+                    <motion.h3 
+                      className="text-2xl font-bold mb-3"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      VIBER
+                    </motion.h3>
+                    <motion.p 
+                      className="text-white/70 text-sm"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                    >
+                      Next-gen messaging
+                    </motion.p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
             
-            {/* Decorative elements */}
+            {/* Enhanced Decorative elements with parallax effect */}
             <motion.div
               className="absolute top-1/4 -left-10 w-20 h-20 bg-viber-green rounded-full opacity-20 blur-xl"
               animate={{
                 scale: [1, 1.2, 1],
                 x: [0, -20, 0],
+                y: [0, -15, 0]
               }}
-              transition={{ duration: 8, repeat: Infinity }}
+              transition={{ 
+                duration: 8, 
+                repeat: Infinity,
+                repeatType: "mirror"
+              }}
             />
             <motion.div
               className="absolute bottom-1/4 -right-10 w-32 h-32 bg-viber-pink rounded-full opacity-20 blur-xl"
               animate={{
                 scale: [1, 1.3, 1],
                 y: [0, -30, 0],
+                x: [0, 20, 0]
               }}
-              transition={{ duration: 10, repeat: Infinity }}
+              transition={{ 
+                duration: 10, 
+                repeat: Infinity,
+                repeatType: "mirror" 
+              }}
+            />
+            <motion.div
+              className="absolute top-1/2 right-1/4 w-16 h-16 bg-viber-blue rounded-full opacity-10 blur-lg"
+              animate={{
+                scale: [1, 1.5, 1],
+                y: [0, -20, 0],
+              }}
+              transition={{ 
+                duration: 7, 
+                repeat: Infinity,
+                repeatType: "mirror" 
+              }}
             />
           </div>
         </div>
@@ -242,3 +349,4 @@ const Index = () => {
 };
 
 export default Index;
+
