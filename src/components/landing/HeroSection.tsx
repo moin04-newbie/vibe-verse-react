@@ -74,7 +74,7 @@ const HeroSection = () => {
               onClick={() => navigate('/dashboard')}
               className="pastel-button flex items-center gap-2"
             >
-              <span>Get Started</span>
+              <span>Open App</span>
               <ArrowRight className="h-4 w-4" />
             </motion.button>
             <motion.button 

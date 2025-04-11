@@ -19,14 +19,16 @@ gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-viber-pastel-pink/30 via-viber-pastel-blue/20 to-viber-pastel-purple/30">
+    <div className="min-h-screen bg-gradient-to-br from-viber-pastel-pink/30 via-viber-pastel-blue/20 to-viber-pastel-purple/30 overflow-x-hidden w-full">
       <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <TestimonialsSection />
-      <AppFeaturesSection />
-      <ShowcaseSection />
-      <CTASection />
+      <main className="w-full">
+        <HeroSection />
+        <FeaturesSection />
+        <TestimonialsSection />
+        <AppFeaturesSection />
+        <ShowcaseSection />
+        <CTASection />
+      </main>
       <Footer />
     </div>
   );
