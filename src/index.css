@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 260 10% 10%;
 
-    --primary: 260 84% 64%;
+    --primary: 265 84% 70%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 10% 95%;
@@ -23,7 +23,7 @@
     --muted: 240 10% 95%;
     --muted-foreground: 240 5% 50%;
 
-    --accent: 260 84% 64%;
+    --accent: 330 84% 70%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -31,9 +31,9 @@
 
     --border: 240 6% 90%;
     --input: 240 6% 90%;
-    --ring: 260 84% 64%;
+    --ring: 265 84% 70%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 
   .dark {
@@ -46,7 +46,7 @@
     --popover: 260 20% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 260 84% 64%;
+    --primary: 265 84% 70%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 260 10% 20%;
@@ -55,7 +55,7 @@
     --muted: 260 10% 20%;
     --muted-foreground: 240 5% 65%;
 
-    --accent: 260 84% 64%;
+    --accent: 330 84% 70%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62% 30%;
@@ -63,7 +63,7 @@
 
     --border: 260 10% 20%;
     --input: 260 10% 20%;
-    --ring: 260 84% 64%;
+    --ring: 265 84% 70%;
   }
 }
 
@@ -95,5 +95,25 @@
   
   .viber-input {
     @apply rounded-full px-4 py-2 bg-secondary border-2 border-transparent focus:border-primary focus:outline-none transition-all duration-200;
+  }
+
+  .genz-card {
+    @apply rounded-3xl p-5 bg-white/80 backdrop-blur-sm shadow-xl border border-white/30 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300;
+  }
+  
+  .genz-button {
+    @apply px-6 py-3 rounded-full font-bold bg-viber-gradient-pastel text-foreground shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300;
+  }
+  
+  .genz-input {
+    @apply rounded-full px-5 py-3 bg-white/70 backdrop-blur-sm border-2 border-viber-pastel-pink/50 focus:border-viber-pastel-purple focus:outline-none transition-all duration-200;
+  }
+  
+  .genz-sidebar {
+    @apply bg-white/70 backdrop-blur-md border-r border-white/30;
+  }
+  
+  .genz-section {
+    @apply rounded-2xl bg-white/50 backdrop-blur-sm border border-white/30 p-4 shadow-md;
   }
 }

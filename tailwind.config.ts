@@ -59,7 +59,18 @@ export default {
 					pink: '#EC4899',
 					green: '#10B981',
 					orange: '#F97316',
-					yellow: '#FBBF24'
+					yellow: '#FBBF24',
+					neon: '#39FF14',
+					coral: '#FF6B6B',
+					mint: '#00FFCC',
+					lavender: '#E6E6FA',
+					pastel: {
+						pink: '#FFD1DC',
+						blue: '#BFE1FF',
+						yellow: '#FFFFBF',
+						green: '#BFFFBF',
+						purple: '#E6C6FF'
+					}
 				}
 			},
 			borderRadius: {
@@ -131,6 +142,9 @@ export default {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'viber-gradient': 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
 				'viber-gradient-alt': 'linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%)',
+				'viber-gradient-pastel': 'linear-gradient(135deg, #FFD1DC 0%, #BFE1FF 100%)',
+				'viber-gradient-neon': 'linear-gradient(135deg, #39FF14 0%, #00FFCC 100%)',
+				'viber-gradient-sunset': 'linear-gradient(135deg, #FF6B6B 0%, #FBBF24 100%)',
 			},
 		},
 	},
