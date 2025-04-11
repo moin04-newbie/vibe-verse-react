@@ -1,8 +1,33 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.glass-card {
+  @apply backdrop-blur-md bg-white/20 border border-white/30 rounded-xl shadow-xl;
+}
+
+.glass-card-dark {
+  @apply backdrop-blur-md bg-black/20 border border-white/10 rounded-xl shadow-xl;
+}
+
+.genz-gradient {
+  @apply bg-gradient-to-br from-viber-pastel-pink via-viber-pastel-purple to-viber-pastel-blue;
+}
+
+.genz-gradient-text {
+  @apply bg-gradient-to-r from-viber-blue via-viber-purple to-viber-pink bg-clip-text text-transparent;
+}
+
+.pastel-card {
+  @apply bg-gradient-to-br from-viber-pastel-pink/40 to-viber-pastel-blue/40 backdrop-blur-sm rounded-3xl p-6 shadow-lg border border-white/20;
+}
+
+.pastel-button {
+  @apply bg-gradient-to-r from-viber-pastel-pink to-viber-pastel-purple text-foreground font-medium px-6 py-3 rounded-full shadow-md hover:shadow-lg transition-all duration-300 border border-white/30;
 }
 
 .logo {
